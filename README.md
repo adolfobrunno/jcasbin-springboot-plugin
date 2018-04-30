@@ -1,4 +1,4 @@
-jcasbin-springboot-plugin
+jcasbin-springboot-plugin [![Build Status](https://travis-ci.org/jcasbin/jcasbin-springboot-plugin.svg?branch=master)](https://travis-ci.org/jcasbin/jcasbin-springboot-plugin) [![Coverage Status](https://coveralls.io/repos/github/jcasbin/jcasbin-springboot-plugin/badge.svg?branch=master)](https://coveralls.io/github/jcasbin/jcasbin-springboot-plugin?branch=master)
 ======
 
 jcasbin-springboot-plugin is an authorization middleware for [Spring Boot](https://projects.spring.io/spring-boot/), it's based on [https://github.com/casbin/jcasbin](https://github.com/casbin/jcasbin).
