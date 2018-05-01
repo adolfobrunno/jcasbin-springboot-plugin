@@ -26,7 +26,7 @@ import java.util.Base64;
 
 @WebFilter("/*")
 public class JCasbinAuthzFilter implements Filter {
-    private Enforcer enforcer;
+    static Enforcer enforcer;
 
     public void init(FilterConfig filterConfig) throws ServletException {
         enforcer = new Enforcer("examples/authz_model.conf", "examples/authz_policy.csv");
