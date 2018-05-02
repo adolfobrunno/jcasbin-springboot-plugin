@@ -28,10 +28,17 @@ import java.util.Base64;
 public class JCasbinAuthzFilter implements Filter {
     static Enforcer enforcer;
 
+    // Initialize jCasbin's enforcer with model and policy rules.
+    // Here we load policy from file, you can choose to load policy from database.
     public void init(FilterConfig filterConfig) throws ServletException {
         enforcer = new Enforcer("examples/authz_model.conf", "examples/authz_policy.csv");
     }
 
+    // In this demo, we use HTTP basic authentication as the authentication method.
+    // This method retrieves the user name from the HTTP header and passes it to jCasbin.
+    // You can change to your own authentication method like OAuth, JWT, Apache Shiro, etc.
+    // You need to implement this getUser() method to make sure jCasbin can get the
+    // authenticated user name.
     private String getUser(HttpServletRequest request) {
         String res = "";
 
@@ -48,19 +55,23 @@ public class JCasbinAuthzFilter implements Filter {
         return res;
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+    // Filters all requests through jCasbin's authorization.
+    // If jCasbin allows the request, pass the request to next handler.
+    // If jCasbin denies the request, return HTTP 403 Forbidden.
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String user = getUser(httpRequest);
-        String path = httpRequest.getRequestURI();
-        String method = httpRequest.getMethod();
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+        String user = getUser(request);
+        String path = request.getRequestURI();
+        String method = request.getMethod();
         System.out.println("(" + user + ", " + path + ", " + method + ")");
 
         if (enforcer.enforce(user, path, method)) {
             filterChain.doFilter(request, response);
         } else {
-            HttpServletResponse httpResponse = (HttpServletResponse) response;
-            httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
     }
 
