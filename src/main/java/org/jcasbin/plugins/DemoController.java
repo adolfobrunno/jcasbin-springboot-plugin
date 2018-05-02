@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 public class DemoController {
     @RequestMapping("/**")
     String index(HttpServletRequest request) {
-        return "OK, path = " + request.getRequestURI();
+        String path = request.getRequestURI();
+        String method = request.getMethod();
+        return String.format("OK, path = %s, method = %s", path, method);
     }
 }
