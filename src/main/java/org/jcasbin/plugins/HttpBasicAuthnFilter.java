@@ -14,14 +14,13 @@
 
 package org.jcasbin.plugins;
 
-import org.apache.tomcat.util.codec.binary.Base64;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.StringTokenizer;
 
 @WebFilter("/*")
@@ -69,7 +68,7 @@ public class HttpBasicAuthnFilter implements Filter {
 
                 if (basic.equalsIgnoreCase("Basic")) {
                     try {
-                        String credentials = new String(Base64.decodeBase64(st.nextToken()), "UTF-8");
+                        String credentials = new String(Base64.getDecoder().decode(st.nextToken()), "UTF-8");
                         int p = credentials.indexOf(":");
                         if (p != -1) {
                             return credentials;

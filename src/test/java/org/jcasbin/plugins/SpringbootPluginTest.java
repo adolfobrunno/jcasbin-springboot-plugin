@@ -14,7 +14,6 @@
 
 package org.jcasbin.plugins;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Base64;
 
 import static org.junit.Assert.fail;
 
@@ -43,7 +44,7 @@ public class SpringbootPluginTest {
             // Password is "123".
             // You can customize your own authentication like OAuth, Apache Shiro, Spring Security, etc.
             String plainCredentials = user + ":123";
-            String base64Credentials = new String(Base64.encodeBase64(plainCredentials.getBytes()));
+            String base64Credentials = Base64.getEncoder().encodeToString(plainCredentials.getBytes());
             HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Basic " + base64Credentials);
 
