@@ -42,19 +42,21 @@ public class HttpBasicAuthnFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        // Get user name and password from HTTP header.
         String credentials = getUserPassword(request, response);
         if (credentials.equals("")) {
             return;
         }
-
         int p = credentials.indexOf(":");
         String username = credentials.substring(0, p).trim();
         String password = credentials.substring(p + 1).trim();
 
+        // Check the user name and password.
         if (!checkUserPassword(username, password)) {
             unauthorized(response, "Bad credentials");
         }
 
+        // All passed, go to the next handler.
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
