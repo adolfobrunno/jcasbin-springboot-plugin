@@ -15,8 +15,6 @@
 package org.jcasbin.plugins;
 
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -28,7 +26,6 @@ import java.util.StringTokenizer;
 
 @WebFilter("/*")
 public class HttpBasicAuthnFilter implements Filter {
-    private static final Logger LOG = LoggerFactory.getLogger(HttpBasicAuthnFilter.class);
     private String realm = "Protected";
 
     @Override
@@ -73,7 +70,6 @@ public class HttpBasicAuthnFilter implements Filter {
                 if (basic.equalsIgnoreCase("Basic")) {
                     try {
                         String credentials = new String(Base64.decodeBase64(st.nextToken()), "UTF-8");
-                        LOG.debug("Credentials: " + credentials);
                         int p = credentials.indexOf(":");
                         if (p != -1) {
                             return credentials;
